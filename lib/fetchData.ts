@@ -26,7 +26,9 @@ export default async function fetchData(
     page,
     limit,
   };
-  const getBatchData = await fetch(url + prodi + new URLSearchParams(params));
+  const getBatchData = await fetch(
+    url + prodi + "?" + new URLSearchParams(params)
+  );
   const dataResults: BatchResultsType = await getBatchData.json();
   return dataResults;
 }
