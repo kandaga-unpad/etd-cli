@@ -20,14 +20,14 @@ export default async function fetchData(
   url: string,
   prodi: string,
   page: string,
-  limit: string
+  limit: string,
 ) {
   const params = {
     page,
     limit,
   };
   const getBatchData = await fetch(
-    url + prodi + "?" + new URLSearchParams(params)
+    url + prodi + "?" + new URLSearchParams(params),
   );
   const dataResults: BatchResultsType = await getBatchData.json();
   return dataResults;

@@ -16,13 +16,15 @@ const baseURLProdi = "https://kandaga.unpad.ac.id:4233/api/etd/prodi/";
 const baseURLItem = "https://kandaga.unpad.ac.id:4233/api/etd/individu/";
 const page = prompt("Halaman:") ?? "0";
 const limit = prompt("Batas Data:") ?? "5";
+const getIndexPage = (Number(page) - 1) * Number(limit) +
+  (page === "0" ? 0 : 1);
 
 export default async function buildItems(prodi: string) {
   const fetchGroupData: BatchResultsType = await fetchData(
     baseURLProdi,
     prodi,
-    page,
-    limit
+    String(getIndexPage),
+    limit,
   );
 
   if (prodi === "") {
@@ -40,7 +42,7 @@ export default async function buildItems(prodi: string) {
 
     const fetchIndividualItem: ETDItem = await getIndividualItem(
       baseURLItem,
-      data.npm
+      data.npm,
     );
     const constructMetadata = {
       dublin_core: {
@@ -69,15 +71,13 @@ export default async function buildItems(prodi: string) {
           {
             "@element": "contributor",
             "@qualifier": "advisor",
-            "#text":
-              fetchIndividualItem.result?.pembimbing[0]?.namaDosen ??
+            "#text": fetchIndividualItem.result?.pembimbing[0]?.namaDosen ??
               "Tidak ada Data Dosen",
           },
           {
             "@element": "contributor",
             "@qualifier": "advisor",
-            "#text":
-              fetchIndividualItem.result?.pembimbing[1]?.namaDosen ??
+            "#text": fetchIndividualItem.result?.pembimbing[1]?.namaDosen ??
               "Tidak ada Data Dosen",
           },
         ],
@@ -88,11 +88,14 @@ export default async function buildItems(prodi: string) {
 
     Deno.writeTextFile(
       `./archives/${folderName}/item_${data.npm}/dublin_core.xml`,
-      metaDataResult
+      metaDataResult,
     );
 
-    Deno.writeTextFile(`./archives/${folderName}/item_${data.npm}/collections`, "kandaga/133")
+    Deno.writeTextFile(
+      `./archives/${folderName}/item_${data.npm}/collections`,
+      "kandaga/133",
+    );
   }
 }
 
-console.log(jenjang[0])
+console.log(jenjang[0]);
