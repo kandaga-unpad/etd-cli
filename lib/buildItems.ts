@@ -180,13 +180,49 @@ export default async function buildItems(prodi: string) {
           }-${metaDataList.tahun}-${metaDataList.npm}-${
             listData.replace("file", "")
           }`;
-          Deno.writeTextFile(
-            `./archives/${folderName}/item_${data.npm}/contents`,
-            fileName + ".pdf\r\n",
-            {
-              append: true,
-            },
-          );
+
+          switch (listData) {
+            case "fileCover":
+            case "fileAbstrak":
+            case "fileDaftarIsi":
+            case "fileBab1":
+            case "filePustaka":
+            case "filePengesahan":
+              Deno.writeTextFile(
+                `./archives/${folderName}/item_${data.npm}/contents`,
+                fileName + ".pdf\r\n",
+                {
+                  append: true,
+                },
+              );
+              break;
+            case "fileBab2":
+            case "fileBab3":
+            case "fileBab4":
+            case "fileBab5":
+            case "fileBab6":
+            case "fileLampiran":
+            case "fileSurat":
+            case "fileSuratIsi":
+              Deno.writeTextFile(
+                `./archives/${folderName}/item_${data.npm}/contents`,
+                fileName + ".pdf\tpermissions:-[r|w] 'Administrator'\r\n",
+                {
+                  append: true,
+                },
+              );
+              break;
+            default:
+              Deno.writeTextFile(
+                `./archives/${folderName}/item_${data.npm}/contents`,
+                fileName + ".pdf\r\n",
+                {
+                  append: true,
+                },
+              );
+              break;
+          }
+
           const downloadedFile = await download(urlFile, {
             dir: `./archives/${folderName}/item_${data.npm}`,
             file: `${fileName}.pdf`,
@@ -199,7 +235,7 @@ export default async function buildItems(prodi: string) {
         } else {
           console.log(
             "%cBerkas tidak ditemukan! melanjutkan ke unduhan selanjutnya...",
-            "color: red"
+            "color: red",
           );
         }
       }
@@ -230,7 +266,9 @@ export default async function buildItems(prodi: string) {
   }
 
   console.log(
-    "Seluruh Data Berhasil diambil, silahkan cek folder %c" + folderName,
+    'Seluruh Data Berhasil diambil, silahkan cek folder %c"' + folderName +
+      '".',
     "color: blue",
   );
+  console.log("%cSUCCESS!", "color: green");
 }
