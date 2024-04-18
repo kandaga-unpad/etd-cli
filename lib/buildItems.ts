@@ -2,7 +2,7 @@
 import { existsSync } from "https://deno.land/std@0.221.0/fs/exists.ts";
 import { stringify } from "https://deno.land/x/xml@2.1.3/mod.ts";
 import { download } from "https://deno.land/x/download@v2.0.2/mod.ts";
-import { compress } from "https://deno.land/x/zip@v1.2.5/mod.ts";
+// import { compress } from "https://deno.land/x/zip@v1.2.5/mod.ts";
 
 // Local Lib
 import fetchData from "./fetchData.ts";
@@ -104,9 +104,13 @@ export default async function buildItems(prodi: string) {
           {
             "@element": "date",
             "@qualifier": "issued",
-            "#text": fetchIndividualItem.result?.metadata.tglUpload
-              .split(" ")
-              .at(0),
+            "#text":
+              fetchIndividualItem.result?.metadata.tglUpload?.split(" ").at(
+                0,
+              ) ??
+                "20" +
+                  fetchIndividualItem.result?.metadata.npm.split("").at(6) +
+                  fetchIndividualItem.result?.metadata.npm.split("").at(7),
           },
           {
             "@element": "description",
@@ -211,7 +215,7 @@ export default async function buildItems(prodi: string) {
             case "fileSuratIsi":
               Deno.writeTextFile(
                 `./archives/${folderName}/item_${data.npm}/contents`,
-                fileName + ".pdf\tpermissions:-[r|w] 'Administrator'\r\n",
+                fileName + `.pdf\tpermissions:-[r] 'administrator' \r\n`,
                 {
                   append: true,
                 },
@@ -277,8 +281,20 @@ export default async function buildItems(prodi: string) {
     "color: blue",
   );
 
-  await compress(`./archives/${folderName}/`, `./archives/${folderName}.zip`)
-  console.log("File sudah dikompres ke " + folderName + '.zip')
+  // const folderList = [];
+  // for await (const folder of Deno.readDir(`./archives/${folderName}`)) {
+  //   folderList.push(`./archives/${folderName}/${folder.name}`);
+  // }
+
+  // await compress(`./archives/${folderName}/`, `./archives/${folderName}.zip`, {
+  //   flags: ["attributes=D"]
+  // });
+  // const zipSize = await Deno.stat(`./archives/${folderName}.zip`);
+  // console.log(
+  //   "File sudah dikompres ke " + folderName + ".zip %c(" +
+  //     formatBytes(zipSize.size) + ")",
+  //   "color: yellow",
+  // );
 
   console.log(
     `Halaman: %c${page} %c- Batas Data: %c${limit}`,
