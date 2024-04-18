@@ -11,6 +11,9 @@ export interface ResultsType {
 }
 
 export interface BatchResultsType {
+  jenjang: string;
+  fakultas: string;
+  total: number;
   page: string;
   limit: string;
   results: Array<ResultsType>;

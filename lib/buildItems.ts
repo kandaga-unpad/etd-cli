@@ -2,6 +2,7 @@
 import { existsSync } from "https://deno.land/std@0.221.0/fs/exists.ts";
 import { stringify } from "https://deno.land/x/xml@2.1.3/mod.ts";
 import { download } from "https://deno.land/x/download@v2.0.2/mod.ts";
+import { compress } from "https://deno.land/x/zip@v1.2.5/mod.ts";
 
 // Local Lib
 import fetchData from "./fetchData.ts";
@@ -16,11 +17,14 @@ const folderName = prompt("Nama Folder:");
 
 const baseURLProdi = "https://kandaga.unpad.ac.id:4233/api/etd/prodi/";
 const baseURLItem = "https://kandaga.unpad.ac.id:4233/api/etd/individu/";
-const page = prompt("Halaman:") ?? "0";
-const limit = prompt("Batas Data:") ?? "5";
+const limit = prompt(
+  "Batas Data (Pastikan Batas Data Konsisten untuk menghindari Duplikasi):",
+) ?? "5";
+const page = prompt("Halaman (Halaman / Page berdasarkan Batas Data):") ?? "0";
 const getIndexPage = (Number(page) - 1) * Number(limit) +
   (page === "0" ? 0 : 1);
 
+// Helper Functions
 function formatBytes(bytes: number, decimals = 2) {
   if (!bytes) return "0 bytes";
 
@@ -50,6 +54,7 @@ function getHandleCollection(kodeProdi: string) {
   return getDataProdi?.kodeDSpace;
 }
 
+// Build Repository Items for SAF
 export default async function buildItems(prodi: string) {
   if (prodi === "") {
     console.log("Program Dihentikan! Kode Prodi tidak valid!");
@@ -234,12 +239,11 @@ export default async function buildItems(prodi: string) {
           );
         } else {
           console.log(
-            "%cBerkas tidak ditemukan! melanjutkan ke unduhan selanjutnya...",
+            `%cBerkas ${listData} tidak ditemukan! melanjutkan ke unduhan selanjutnya...`,
             "color: red",
           );
         }
       }
-      // download(getFileList[0]);
     }
 
     Deno.writeTextFile(
@@ -265,10 +269,22 @@ export default async function buildItems(prodi: string) {
     );
   }
 
+  const remaining = fetchGroupData.total - (getIndexPage * Number(limit));
+
   console.log(
     'Seluruh Data Berhasil diambil, silahkan cek folder %c"' + folderName +
       '".',
     "color: blue",
   );
-  console.log("%cSUCCESS!", "color: green");
+
+  await compress(`./archives/${folderName}/`, `./archives/${folderName}.zip`)
+  console.log("File sudah dikompres ke " + folderName + '.zip')
+
+  console.log(
+    `Halaman: %c${page} %c- Batas Data: %c${limit}`,
+    "color: green; font-weight: bold;",
+    "color:white",
+    "color: red; font-weight: bold",
+  );
+  console.log(`%cTersisa : "${remaining}" yang perlu diunduh!`, "color: green");
 }
