@@ -199,7 +199,7 @@ export default async function buildItems(prodi: string) {
             case "filePengesahan":
               Deno.writeTextFile(
                 `./archives/${folderName}/item_${data.npm}/contents`,
-                fileName + ".pdf\r\n",
+                fileName + ".pdf\tpermissions:-r 'Anonymous'\r\n",
                 {
                   append: true,
                 },
@@ -215,7 +215,7 @@ export default async function buildItems(prodi: string) {
             case "fileSuratIsi":
               Deno.writeTextFile(
                 `./archives/${folderName}/item_${data.npm}/contents`,
-                fileName + `.pdf\tpermissions:-[r] 'administrator' \r\n`,
+                fileName + `.pdf\tpermissions:-r 'Mahasiswa'\r\n`,
                 {
                   append: true,
                 },
@@ -286,15 +286,15 @@ export default async function buildItems(prodi: string) {
   //   folderList.push(`./archives/${folderName}/${folder.name}`);
   // }
 
-  // await compress(`./archives/${folderName}/`, `./archives/${folderName}.zip`, {
-  //   flags: ["attributes=D"]
-  // });
-  // const zipSize = await Deno.stat(`./archives/${folderName}.zip`);
-  // console.log(
-  //   "File sudah dikompres ke " + folderName + ".zip %c(" +
-  //     formatBytes(zipSize.size) + ")",
-  //   "color: yellow",
-  // );
+  // if (folderList.length > 0) {
+  //   await compress(`./archives/${folderName}/`, `./archives/${folderName}.zip`);
+  //   const zipSize = await Deno.stat(`./archives/${folderName}.zip`);
+  //   console.log(
+  //     "File sudah dikompres ke " + folderName + ".zip %c(" +
+  //       formatBytes(zipSize.size) + ")",
+  //     "color: yellow",
+  //   );
+  // }
 
   console.log(
     `Halaman: %c${page} %c- Batas Data: %c${limit}`,
