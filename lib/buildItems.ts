@@ -273,7 +273,7 @@ export default async function buildItems(prodi: string) {
     );
   }
 
-  const remaining = fetchGroupData.total - (getIndexPage * Number(limit));
+  const remaining = fetchGroupData.total - (Number(page) * Number(limit));
 
   console.log(
     'Seluruh Data Berhasil diambil, silahkan cek folder %c"' + folderName +
@@ -301,6 +301,12 @@ export default async function buildItems(prodi: string) {
     "color: green; font-weight: bold;",
     "color:white",
     "color: red; font-weight: bold",
+  );
+  console.log(
+    `Total Data di Prodi %c${getNamaProdi()?.programStudi}%c: %c${fetchGroupData.total}`,
+    "color: green",
+    "color: white",
+    "color: yellow",
   );
   console.log(`%cTersisa : "${remaining}" yang perlu diunduh!`, "color: green");
 }
