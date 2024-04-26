@@ -68,6 +68,10 @@ export default async function buildItems(prodi: string) {
     limit,
   );
 
+  if (!existsSync(`./archives`, { isDirectory: true })) {
+    Deno.mkdirSync(`./archives`)
+  }
+
   if (!existsSync(`./archives/${folderName}`, { isDirectory: true })) {
     Deno.mkdirSync(`./archives/${folderName}`);
   }
