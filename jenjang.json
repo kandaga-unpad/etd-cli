@@ -117,19 +117,19 @@
     "kodeProdi": 120430,
     "programStudi": "Manajemen",
     "jenjang": "Doktor",
-    "kodeDSpace": ""
+    "kodeDSpace": 212
   },
   {
     "kodeProdi": 120510,
     "programStudi": "Bisnis Digital",
     "jenjang": "Sarjana",
-    "kodeDSpace": ""
+    "kodeDSpace": 204
   },
   {
     "kodeProdi": 120530,
     "programStudi": "Akuntansi",
     "jenjang": "Doktor",
-    "kodeDSpace": 212
+    "kodeDSpace": 213
   },
   {
     "kodeProdi": 120610,
@@ -477,7 +477,7 @@
     "kodeProdi": 140710,
     "programStudi": "Geofisika",
     "jenjang": "Sarjana",
-    "kodeDSpace": ""
+    "kodeDSpace": 268
   },
   {
     "kodeProdi": 140720,
